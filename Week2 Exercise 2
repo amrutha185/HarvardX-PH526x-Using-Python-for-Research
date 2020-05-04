@@ -1,0 +1,98 @@
+Exercise 6
+
+In exercises 6 through 9, we will make functions that check whether either player has won the game.
+Make a function row_win(board, player) that takes the player (integer) and determines if any row consists of only their marker.
+Have it return True if this condition is met and False otherwise.
+Note that board is already defined as in Exercise 5. Call row_win to check if Player 1 has a complete row.
+Does Player 1 have a complete row?
+
+---Answer---
+def row_win(board,player):
+    if(np.any(np.all(board == player, axis = 1))):
+        return True
+    else:
+        return False
+row_win(board,2)
+
+Answer is No
+
+Exercise 7
+In exercises 6 through 9, we will make functions that check whether either player has won the game.
+Make a function col_win(board, player) that takes the player (integer) and determines if any column consists of only their marker.
+Have it return True if this condition is met and False otherwise.
+Note that board is already defined as in Exercise 5. Call col_win to check if Player 1 has a complete column.
+Does Player 1 have a complete column?
+
+---Answer---
+just change the axis to check for columns
+
+def col_win(board,player):
+    if(np.any(np.all(board == player, axis = 0))):
+        return True
+    else:
+        return False
+row_win(board,1)
+answer is False
+
+Exercise 8
+
+In exercises 6 through 9, we will make functions that check whether either player has won the game.
+Finally, create a function diag_win(board, player) that takes the player (integer) and determines if any diagonal consists of only their marker.
+Have it return True if this condition is met and False otherwise.
+Note that board is modified from Exercise 5. Call diag_win to check if Player 2 has a complete diagonal.
+Use this sample code to get started:
+
+board[1,1] = 2
+
+---Answer---
+board[1,1] = 2
+
+# write your code here!
+def diag_win(board,player):
+    if(np.all(np.diag(board == player)) or np.all(np.diag(np.fliplr(board) == player))): #np.diag results in diagonal values.
+                                                                                          #np.fliplr flips array left/right direction
+        return True
+    else:
+        return False
+diag_win(board,2)
+
+board
+
+answer is True. In the beginning of the given code we are setting the board value board[1,1] to 2.
+
+Exercise 9
+
+
+In exercises 6 through 9, we will make functions that check whether either player has won the game.
+Create a function evaluate(board) that uses row_win, col_win, and diag_win functions for both players. If one of them has won, return that player's number. If the board is full but no one has won, return -1. Otherwise, return 0.
+Note that board is defined as in Exercise 8. Call evaluate to see if either player has won the game yet.
+Use this sample code to get started:
+
+def evaluate(board):
+    winner = 0
+    for player in [1, 2]:
+        # add your code here!
+        pass
+    if np.all(board != 0) and winner == 0:
+        winner = -1
+    return winner
+    
+Has anyone won the game yet?
+
+---Answer---
+def evaluate(board):
+    winner = 0
+    for player in [1, 2]:
+        if(row_win(board,player) or col_win(board,player) or diag_win(board,player)):
+            winner = player
+        pass
+    if np.all(board != 0) and winner == 0:
+        winner = -1
+    return winner
+
+evaluate(board)
+
+Answer is 2.
+
+
+
