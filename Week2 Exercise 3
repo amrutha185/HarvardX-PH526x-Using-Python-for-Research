@@ -1,0 +1,58 @@
+Exercise 10
+In this exercise, we will use all the functions we have written to simulate an entire game.
+The functions create_board(), random_place(board, player), and evaluate(board) are all defined as in previous exercises.
+Create a function play_game() that:
+- Creates a board.
+- Alternates taking turns between two players (beginning with Player 1), placing a marker during each turn.
+- Evaluates the board for a winner after each placement.
+- Continues the game until one player wins (returning 1 or 2 to reflect the winning player), or the game is a draw (returning -1).
+Call play_game 1000 times, and store the results of the game in a list called results. Use random.seed(1) so we can check your answer!
+How many times does Player 1 win out of 1000 games?
+
+---Answer---
+random.seed(1)
+def play_game():
+    board = create_board() #create a board
+    winner = 0 
+    while(winner == 0):
+        for player in [1,2]: #players take alternate turn till they have a winner
+            random_place(board,player) #place randomly on board
+            winner = evaluate(board) #check for winner
+            if(winner!= 0):
+                break; #if there is a winner stop the loop
+    return winner
+
+
+results = [play_game() for i in range(1000)] #play 1000 games and the winner  result is added to the list
+results.count(1)  #no.of times player 1 won
+
+
+Exercise 11
+In the previous exercise, we saw that when guessing at random, it's better to go first, as one would expect. Let's see if Player 1 can improve their strategy.
+Create a function play_strategic_game(), where Player 1 always starts with the middle square, and otherwise both players place their markers randomly.
+Call play_strategic_game 1000 times.
+Set the seed to 1 using random.seed(1) again.
+How many times does Player 1 win out of 1000 games with this new strategy?
+
+
+---Answer---
+random.seed(1)
+def play_strategic_game():
+    winner = 0
+    board = create_board()
+    board[1,1] = 1
+    while(winner == 0):
+        for player in [2,1]: #start the loop with 2 because the Player 1 has already played by placing at middle of board
+            random_place(board,player)
+            winner = evaluate(board)
+            if(winner!= 0):
+                break;
+    return winner
+    
+results = [play_strategic_game() for i in range(1000)]
+# write your code here
+results.count(1)
+
+
+
+
