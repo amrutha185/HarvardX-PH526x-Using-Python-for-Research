@@ -1,0 +1,95 @@
+Exercise 1
+
+For our tic-tac-toe board, we will use a numpy array with dimension 3 by 3.
+Write a function create_board() that creates such a board with the value of each cell set to the integer 0.
+Call create_board() and store it.
+What is the correct numpy function to initialize our tic-tac-toe board?
+
+---Answer---
+# write your code here!
+import numpy as np
+
+def create_board():
+    x = np.zeros((3,3), dtype=int)
+    print(x)
+create_board()
+
+Exercise 2
+
+Players 1 and 2 will take turns changing values of this array from a 0 to a 1 or 2, indicating the number of the player who places a marker there.
+Create a function place(board, player, position), where:
+- player is the current player (an integer 1 or 2).
+- position is a tuple of length 2 specifying a desired location to place their marker.
+Your function should only allow the current player to place a marker on the board (change the board position to their number) if that position is empty (zero).
+Use create_board() to store a board as board, and use place to have Player 1 place a marker on location (0, 0).
+What is the correct way to use the place function to have Player 1 place a marker on location (0,0)?
+
+--Answer---
+def place(board, player, position):  #write function as given
+    if board[position] == 0: #check if board position is empty
+        board[position] = player #if empty set that value with the Player value 1 or 2
+        return board #return updated board
+
+place(board,1,(0,0))  #pass the player as 1 and position as (0,0)
+
+Exercise 3
+
+In this exercise, we will determine which positions are available to either player for placing their marker.
+Create a function possibilities(board) that returns a list of all positions (tuples) on the board that are not occupied (0). (Hint: numpy.where is a handy function that returns a list of indices that meet a condition.)
+Note that board is defined as at the end of Exercise 2. Call possibilities(board) to see what it returns!
+What does possibilities(board) return?
+
+---Answer---
+def possibilites(board):
+    return list(zip(*np.where(board == 0))) # zip function takes iterables as input and converts them to tuple.
+    
+possibilites(board)
+
+Exercise 4
+The next step is for the current player to place a marker among the available positions. In this exercise, we will select an available board position at random and place a marker there.
+Write a function random_place(board, player) that places a marker for the current player at random among all the available positions (those currently set to 0).
+Find possible placements with possibilities(board).
+Select one possible placement at random using random.choice(selection).
+Note that board is already defined as at the end of Exercise 2. Call random_place(board, player) to place a random marker for Player 2, and store this as board to update its value.
+Use this code to get you started:
+
+---Answer---
+import random 
+random.seed(1)
+
+possibilites(board)
+def random_place(board,player):
+    selection = possibilities(board) # to check empty positions
+    if len(selection) > 0 : if there is empty position then 
+        place(board,player,random.choice(selection)) place at random position
+    return board  #return updated board
+
+random_place(board,2)
+
+Exercise 5
+We will now have both players place three markers each.
+A new board is given by the sample code. Call random_place(board, player) to place three pieces each on board for players 1 and 2.
+Print board to see your result.
+Start with this sample code:
+
+random.seed(1)
+board = create_board()
+
+# write your code here!
+
+At what positions does player 1 have markers after three rounds of random placement?
+
+
+---Answer---
+random.seed(1)
+board = create_board()
+
+for i in range(3): #loop for 3 chances for each player
+    for player in [1, 2]: #loop for player 1 and 2 turns
+        random_place(board, player) 
+
+print(board)
+
+
+
+
