@@ -1,0 +1,236 @@
+Exercise 1
+
+Our first step is to import the dataset.
+
+Instructions
+Read in the data as a pandas dataframe using pd.read_csv. The data can be found at this link from anywhere and at this link from within the courseware.
+
+This code will get you started:
+
+import pandas as pd
+
+# write your code here!
+Taking a look at the first 5 rows of the dataset, how many wines in those 5 rows are considered high quality?
+
+----Answer----
+numeric_data = pd.read_csv("C:/Users/lidzr84/Downloads/Python Practice edX/Harvard Wine data.csv",index_col = 0)
+numeric_data.head()
+
+Exercise 2
+Next, we will inspect the dataset and perform some mild data cleaning.
+
+Instructions
+In order to get all numeric data, we will change the color column to an is_red column.
+
+If color == 'red', we will encode a 1 for is_red.
+If color == 'white', we will encode a 0 for is_red.
+Create this new column, is_red. Drop the color column as well as quality and high_quality. We will predict the quality of wine using the numeric data in a later exercise
+
+Store this all numeric data in a pandas dataframe called numeric_data.
+
+How many red wines are in the dataset?
+
+---Answer ---
+#create new column is_red based on color
+numeric_data["is_red"] = (numeric_data["color"] == "red").astype(int)
+
+#delete columns
+numeric_data = numeric_data.drop(["quality","color","high_quality"],axis = 1)
+
+#count how many red wines where is_red = 1
+numeric_data.groupby("is_red").count()
+
+Exercise 3
+We want to ensure that each variable contributes equally to the kNN classifier, so we will need to scale the data by subtracting the mean of each variable (column) and dividing each variable (column) by its standard deviation. Then, we will use principal components to take a linear snapshot of the data from several different angles, with each snapshot ordered by how well it aligns with variation in the data. In this exercise, we will scale the numeric data and extract the first two principal components.
+
+Instructions
+Scale the data using the sklearn.preprocessing function scale() on numeric_data.
+Convert this to a pandas dataframe, and store it as numeric_data.
+Include the numeric variable names using the parameter columns = numeric_data.columns.
+Use the sklearn.decomposition module PCA() and store it as pca.
+Use the fit_transform() function to extract the first two principal components from the data, and store them as principal_components.
+Note: You may get a DataConversionWarning, but you can safely ignore it.
+
+Fill in this code as you work:
+
+import sklearn.preprocessing
+scaled_data = 
+numeric_data = 
+
+import sklearn.decomposition
+pca = 
+principal_components = 
+What is the shape of the new dataset?
+Enter the first number here. --6497
+
+Enter the second number here. -- 2
+
+---Answer---
+import sklearn.preprocessing as pp
+scaled_data = pp.scale(numeric_data) # Google it
+numeric_data = pd.DataFrame(data = scaled_data,columns = numeric_data.columns) #google it and follow instructions above
+
+import sklearn.decomposition 
+from sklearn.decomposition import PCA
+pca = sklearn.decomposition .PCA() 
+
+new_pca = PCA(n_components = 2) #since we are asked to extract first 2 components
+principal_components = new_pca.fit_transform(numeric_data)
+
+Exercise 4
+
+In Exercise 4, we will plot the first two principal components of the covariates in the dataset. The high and low quality wines will be colored using red and blue, respectively.
+
+Instructions
+The first two principal components can be accessed using principal_components[:,0] and principal_components[:,1]. Store these as x and y respectively, and make a scatter plot of these first two principal components.
+
+Consider how well the two groups of wines are separated by the first two principal components.
+
+Fill in your code where indicated to make the plot:
+
+import matplotlib.pyplot as plt
+from matplotlib.colors import ListedColormap
+from matplotlib.backends.backend_pdf import PdfPages
+observation_colormap = ListedColormap(['red', 'blue'])
+x = # Enter your code here!
+y = # Enter your code here!
+
+plt.title("Principal Components of Wine")
+plt.scatter(x, y, alpha = 0.2,
+    c = data['high_quality'], cmap = observation_colormap, edgecolors = 'none')
+plt.xlim(-8, 8); plt.ylim(-8, 8)
+plt.xlabel("Principal Component 1")
+plt.ylabel("Principal Component 2")
+plt.show()
+Could you easily draw a linear boundary between the high and low quality wines using the first two principal components?
+
+---Answer---
+x = principal_components[:,0]
+y = principal_components[:,1]
+
+Answer is No, we cannot draw a linear boundary
+
+Exercise 5
+In Exercise 5, we will create a function that calculates the accuracy between predictions and outcomes.
+
+Instructions
+Create a function accuracy(predictions, outcomes) that takes two lists of the same size as arguments and returns a single number, which is the percentage of elements that are equal for the two lists.
+Use accuracy to compare the percentage of similar elements in the x and y numpy arrays defined below.
+Print your answer.
+Here's the sample code to get you started:
+
+import numpy as np 
+np.random.seed(1) # do not change this!
+
+x = np.random.randint(0, 2, 1000)
+y = np.random.randint(0 ,2, 1000)
+
+def accuracy(predictions, outcomes):
+    # write your code here!
+What is the accuracy of the x predictions on the "true" outcomes y?
+
+----Answer----
+import numpy as np 
+np.random.seed(1) # do not change
+
+x = np.random.randint(0, 2, 1000)
+y = np.random.randint(0 ,2, 1000)
+
+def accuracy(predictions, outcomes):
+    # write your code here!
+    percent = 100* np.mean(predictions == outcomes)
+    return percent
+
+accuracy(x,y)
+
+accuracy of x predictions on true outcomes of y is 51.5%. This will be same how many times you run though we are using randint.
+This is because see the first line. seed is set to 1
+
+Exercise 6
+
+The dataset remains stored as data. Because most wines in the dataset are classified as low quality, one very simple classification rule is to predict that all wines are of low quality. In this exercise, we determine the accuracy of this simple rule.
+
+Instructions
+Use accuracy() to calculate how many wines in the dataset are of low quality. Do this by using 0 as the first argument, and data["high_quality"] as the second argument.
+
+Print your result.
+
+What proportion of wines in the dataset are of low quality?
+
+---Asnwer--
+Read instructions and write the answer
+
+accuracy(0,data["high_quality"])
+answer is 36.693858704017238
+
+Exercise 7
+In Exercise 7, we will use the kNN classifier from scikit-learn to predict the quality of wines in our dataset.
+
+Instructions
+Use knn.predict(numeric_data) to predict which wines are high and low quality and store the result as library_predictions.
+Use accuracy to find the accuracy of your predictions, using library_predictions as the first argument and data["high_quality"] as the second argument.
+Print your answer. Is this prediction better than the simple classifier in Exercise 6?
+Here's the sample code to get you started:
+
+from sklearn.neighbors import KNeighborsClassifier
+knn = KNeighborsClassifier(n_neighbors = 5)
+knn.fit(numeric_data, data['high_quality'])
+# Enter your code here!
+What is the accuracy of the KNN classifier?
+
+---Answer---
+library_predictions = knn.predict(numeric_data)
+print(accuracy(library_predictions,data["high_quality"]))
+accuracy is 84.1465291673
+
+Exercise 8
+Unlike the scikit-learn function, our homemade kNN classifier does not take any shortcuts in calculating which neighbors are closest to each observation, so it is likely too slow to carry out on the whole dataset. In this exercise, we will select a subset of our data to use in our homemade kNN classifier.
+
+Instructions
+Fix the random generator using random.seed(123), and select 10 rows from the dataset using random.sample(range(n_rows), 10). Store this selection as selection.
+
+Use this sample code to get started:
+
+n_rows = data.shape[0]
+# Enter your code here
+What is the 10th random row selected?
+
+#set random.seed to 123
+random.seed(123)
+
+selection = random.sample(range(n_rows), 10)
+
+10 element in the list is 
+print(selection[9:]) -- answer is 4392
+
+
+Exercise 9
+
+We are now ready to use our homemade kNN classifier and compare the accuracy of our results to the baseline.
+
+Instructions
+For each predictor in predictors[selection], use knn_predict(p, predictors[training_indices,:], outcomes[training_indices], k=5) to predict the quality of each wine in the prediction set, and store these predictions as a np.array called my_predictions. Note that knn_predict is defined as in the Case 3 videos (and as given at the beginning of these exercises).
+Using the accuracy function, compare these results to the selected rows from the high_quality variable in data using my_predictions as the first argument and data.high_quality.iloc[selection] as the second argument. Store these results as percentage.
+Print your answer.
+Here's the sample code to get you started:
+
+predictors = np.array(numeric_data)
+training_indices = [i for i in range(len(predictors)) if i not in selection]
+outcomes = np.array(data["high_quality"])
+
+my_predictions = # Enter your code here!
+percentage = # Enter your code here!
+What is the accuracy of our homemade classifier on the subset of the data?
+
+---Answer---
+ # Enter your code here!
+my_predictions = np.array([knn_predict(p, predictors[training_indices,:], outcomes[training_indices], k=5) for p in predictors[selection]])
+
+# Enter your code here!               
+percentage = accuracy(my_predictions,data.high_quality.iloc[selection])
+
+print(percentage)
+
+answer is 70%
+
+
