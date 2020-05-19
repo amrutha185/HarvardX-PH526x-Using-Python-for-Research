@@ -1,0 +1,119 @@
+Exercise 1
+
+In Exercise 1, we will group the dataframe by birdname and then find the average speed_2d for each bird. pandas makes it easy to perform basic operations on groups within a dataframe without needing to loop through each value in the dataframe.
+
+Instructions
+Fill in the code to find the mean altitudes of each bird using the pre-loaded birddata dataframe.
+
+Here is the code:
+
+# First, use `groupby()` to group the data by "bird_name".
+grouped_birds =
+
+# Now calculate the mean of `speed_2d` using the `mean()` function.
+mean_speeds = 
+
+# Find the mean `altitude` for each bird.
+mean_altitudes = 
+What is the mean speed for Sanne?
+
+Answer:
+grouped_birds = birddata.groupby(['bird_name'])
+mean_speeds = birddata.groupby(['speed_2d']).mean()
+mean_altitudes = grouped_birds.altitude.mean()
+
+Exercise 2
+
+In Exercise 2, we will group the flight times by date and calculate the mean altitude within that day.
+
+Instructions
+Convert birddata.date_time to the pd.datetime format, and store as birddata["date"].
+
+Fill in the code below to find the mean altitudes for each day:
+
+# Convert birddata.date_time to the `pd.datetime` format.
+birddata.date_time = 
+
+# Create a new column of day of observation
+birddata["date"] = 
+
+# Use `groupby()` to group the data by date.
+grouped_bydates = 
+
+# Find the mean `altitude` for each date.
+mean_altitudes_perday =
+What is the mean altitude of the birds on 2013-09-12?
+
+Answer:
+
+# Convert birddata.date_time to the `pd.datetime` format.
+
+birddata.date_time = pd.to_datetime(birddata["date_time"])
+
+# Create a new column of day of observation
+birddata["date"] = birddata.date_time.dt.date
+
+# Use `groupby()` to group the data by date.
+grouped_bydates = birddata.groupby(['date'])
+
+# Find the mean `altitude` for each date.
+mean_altitudes_perday = grouped_bydates.altitude.mean()
+To get mean for specific date
+mean_altitudes_perday[datetime.date(2013, 9, 12)]
+answer is 75.64609053497942
+
+
+Exercise 3
+
+In Exercise 3, we will group the flight times by both bird and date, and calculate the mean altitude for each.
+
+Instructions
+Note that birddata already contains the date column. To find the average speed for each bird and day, create a new grouped dataframe called grouped_birdday that groups the data by both bird_name and date.
+
+Fill in the following code for this exercise:
+
+# Use `groupby()` to group the data by bird and date.
+grouped_birdday = 
+
+# Find the mean `altitude` for each bird and date.
+mean_altitudes_perday = 
+What is the mean altitude of the bird Eric on 2013-08-18?
+Answer:
+grouped_birdday = birddata.groupby(["bird_name", "date"])
+mean_altitudes_perday = grouped_birdday.altitude.mean()
+
+mean_altitudes_perday.head()
+
+Answer is 121.353659
+
+Exercise 4
+1 point possible (graded)
+In Exercise 4, we will find the average speed for each bird and day.
+
+Instructions
+Store the average speeds for each bird and day as three pandas Series objects, one for each bird, then use the plotting code provided to plot the average speeds for each bird.
+
+Here is the code to moldify for this exercise:
+
+import matplotlib.pyplot as plt
+
+eric_daily_speed  = # Enter your code here.
+sanne_daily_speed = # Enter your code here.
+nico_daily_speed  = # Enter your code here.
+
+eric_daily_speed.plot(label="Eric")
+sanne_daily_speed.plot(label="Sanne")
+nico_daily_speed.plot(label="Nico")
+plt.legend(loc="upper left")
+plt.show()
+What is the mean speed of the bird Nico on 2014-04-04?
+
+Answer:
+eric_daily_speed  = grouped_birdday.speed_2d.mean()["Eric"]
+sanne_daily_speed = grouped_birdday.speed_2d.mean()["Sanne"]
+nico_daily_speed  = grouped_birdday.speed_2d.mean()["Nico"]
+
+To get mean speed of the bird Nico on 2014-04-04
+
+nico_daily_speed[datetime.date(2014, 4, 4)] 
+that is 2.8324654508684057
